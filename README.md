@@ -1,6 +1,6 @@
 # Отключение рекламы на устройствах Яндекс
 
-Статья: https://dzen.ru/a/aE2nH724O0UJBTL_
+Статья: [https://dzen.ru/a/aE2nH724O0UJBTL_]
 
 
 Сборка:
