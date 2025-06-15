@@ -51,3 +51,6 @@ chmod +x /data/local/tmp/tls_proxy &>> /data/local/tmp/script.log
 /data/local/tmp/tls_proxy &
 sleep 1
 killall -9 com.yandex.io.sdk
+(sleep 10; killall -9 com.yandex.io.sdk) &
+(sleep 30; killall -9 com.yandex.io.sdk) &
+(sleep 60; killall -9 com.yandex.io.sdk) &
