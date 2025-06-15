@@ -49,8 +49,5 @@ iptables -t nat -A OUTPUT -p tcp -d 213.180.193.230 --dport 443 -m owner ! --uid
 iptables -t nat -A OUTPUT -p tcp -d 77.88.21.175 --dport 443 -m owner ! --uid-owner 0 -j REDIRECT --to-ports 8444
 chmod +x /data/local/tmp/tls_proxy &>> /data/local/tmp/script.log
 /data/local/tmp/tls_proxy &
-sleep 1
-killall -9 com.yandex.io.sdk
-(sleep 10; killall -9 com.yandex.io.sdk) &
-(sleep 30; killall -9 com.yandex.io.sdk) &
-(sleep 60; killall -9 com.yandex.io.sdk) &
+#wait 2 min so wifi is certainly connected, then restart io sdk to reload config caches
+(sleep 120; killall -9 com.yandex.io.sdk) &

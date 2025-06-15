@@ -57,7 +57,7 @@ static const ReplaceRule client_rules[] = {
     {"TvUrlAdvertisement { urls }", "TvUrlAdvertisement {      }"},
 };
 static const ReplaceRule backend_rules[] = {
-    {"\"pinnedItems\":{\"", "\"boringItems\":{\""},
+    {"\"pinnedItems\"", "\"boringItems\""},
     {"\"customAppIconsPackages\"", "\"pinnedItems\":{},\"zzzzz\""},
 };
 #define CLIENT_RULES_COUNT (sizeof(client_rules) / sizeof(client_rules[0]))
