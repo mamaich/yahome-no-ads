@@ -57,7 +57,8 @@ static const ReplaceRule client_rules[] = {
     {"TvUrlAdvertisement { urls }", "TvUrlAdvertisement {      }"},
 };
 static const ReplaceRule backend_rules[] = {
-    {"\"pinnedItems\":{\"", "pinnedItems,Z:{\""},
+    {"\"pinnedItems\":{\"", "\"boringItems\":{\""},
+    {"\"customAppIconsPackages\"", "\"pinnedItems\":{},\"zzzzz\""},
 };
 #define CLIENT_RULES_COUNT (sizeof(client_rules) / sizeof(client_rules[0]))
 #define BACKEND_RULES_COUNT (sizeof(backend_rules) / sizeof(backend_rules[0]))
@@ -502,7 +503,7 @@ SSL_CTX *create_client_context() {
     }
 
     SSL_CTX_set_security_level(ctx, 0);
-    SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+    SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2); // Отключаем только SSLv2, разрешаем SSLv3 и выше
 
     if (SSL_CTX_use_certificate_file(ctx, CERT_FILE, SSL_FILETYPE_PEM) <= 0 ||
         SSL_CTX_use_PrivateKey_file(ctx, KEY_FILE, SSL_FILETYPE_PEM) <= 0) {
@@ -528,7 +529,7 @@ SSL_CTX *create_backend_context() {
     }
 
     SSL_CTX_set_security_level(ctx, 0);
-    SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+    SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2); // Отключаем только SSLv2, разрешаем SSLv3 и выше
     SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
     return ctx;
 }
@@ -762,9 +763,9 @@ void *run_proxy(void *arg) {
                     char err_buf[256];
                     ERR_error_string_n(err, err_buf, sizeof(err_buf));
                     int retry = 0;
-                    if (strstr(err_buf, "tlsv1 alert unknown ca")) {
+                    if (strstr(err_buf, "tlsv1 alert unknown ca") || strstr(err_buf, "sslv3 alert certificate unknown")) {
                         handle_unknown_ca_error();
-                        DEBUG_PRINT("Retrying SSL_accept after handling unknown ca on port %d", port);
+                        DEBUG_PRINT("Retrying SSL_accept after handling unknown ca or certificate unknown on port %d", port);
                         ssl_accept_ret = SSL_accept(conn->client_ssl);
                         if (ssl_accept_ret > 0) {
                             retry = 1;
