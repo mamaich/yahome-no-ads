@@ -55,7 +55,7 @@ typedef struct {
 // Массив правил замены
 static const ReplaceRule client_rules[] = {
     {"TvUrlAdvertisement { urls }", "TvUrlAdvertisement {      }"},
-    {"TvUrlAdvertisementItem { urls }", "TvUrlAdvertisementItem {      }"},
+    {"TvUrlAdvertisementItem { url }", "TvUrlAdvertisementItem {     }"},
 };
 static const ReplaceRule backend_rules[] = {
     {"\"pinnedItems\"", "\"boringItems\""},
